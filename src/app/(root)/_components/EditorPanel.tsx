@@ -5,7 +5,7 @@ import { useClerk } from '@clerk/nextjs'
 import React, { useEffect, useState } from 'react'
 import { defineMonacoThemes, LANGUAGE_CONFIG } from '../_constants';
 import Image from 'next/image';
-import { RotateCcwIcon, Share, ShareIcon, TypeIcon } from 'lucide-react';
+import { RotateCcwIcon, ShareIcon, TypeIcon } from 'lucide-react';
 import { motion } from "framer-motion";
 import { Editor } from '@monaco-editor/react';
 import ShareSnippetDialog from './ShareSnippetDialog';
@@ -16,14 +16,8 @@ import { EditorPanelSkeleton } from './EditorPanelSkeleton';
 function EditorPanel() {
   const clerk = useClerk();
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
-  const {language, theme, fontSize, editor, setFontSize, setEditor} = useCodeEditorStore();
+  const {language, theme, fontSize, setFontSize, setEditor} = useCodeEditorStore();
   const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    const savedCode = localStorage.getItem(`editor-code-${language}`);
-    const newCode= savedCode|| LANGUAGE_CONFIG[language].defaultCode;
-    if(editor) editor.setValue(newCode);
-  }, [language, editor]);
 
   useEffect(() => {
     const savedFontSize = localStorage.getItem('editor-font-size');
@@ -32,8 +26,8 @@ function EditorPanel() {
 
     const handleRefresh = () => {
       const defaultCode = LANGUAGE_CONFIG[language].defaultCode;
-      if (editor) editor.setValue(defaultCode);
-      localStorage.removeItem(`editor-code-${language}`);
+      localStorage.setItem(`editor-code-${language}`, defaultCode);
+      window.location.reload();
     };
 
     const handleEditorChange = (value: string | undefined) => {

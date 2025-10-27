@@ -7,12 +7,12 @@ interface CodeBlockProps {
 
 
 
-const CodeBlock = ({ code, language }: CodeBlockProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const CodeBlock = ({ code }: CodeBlockProps) => {
+  const [isExpanded] = useState(false);
   const lines = code.split("\n");
   const displayCode = isExpanded ? code : lines.slice(0, 6).join("\n");
   return (
-    <div>CodeBlock</div>
+    <div>{displayCode}</div>
   )
 }
 
